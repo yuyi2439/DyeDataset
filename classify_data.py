@@ -1,5 +1,6 @@
-import json5
 import re
+
+import json5
 
 
 def classify(system_text, user_text):
@@ -26,13 +27,15 @@ def classify(system_text, user_text):
     if re.search(r"管理员模式|\[管理员\].*紧急|管理.?员.*原始|ADMIN OVERRIDE", ut):
         return "admin_bypass"
     if re.search(r"管理员", ut) and re.search(
-        r"原始|手机号|用户.*信息|数据|身份证|批准.*退款", ut
+        r"原始|手机号|用户.*信息|数据|身份证|批准.*退款",
+        ut,
     ):
         return "admin_bypass"
 
     # fake system tag
     if re.search(
-        r"\[SYSTEM\]|\[系统\]|<system>|系统通知|系统更新|新系统设定|新指令：", ut
+        r"\[SYSTEM\]|\[系统\]|<system>|系统通知|系统更新|新系统设定|新指令：",
+        ut,
     ):
         return "fake_system_tag"
     if re.search(r"### NEW SYSTEM PROMPT|\[SYSTEM MESSAGE\]", ut):
@@ -51,7 +54,8 @@ def classify(system_text, user_text):
     if re.search(r"想象.*你|从现在起.*是|不受.*限制|解除.*限制|无视.*限制", ut):
         return "role_play_injection"
     if re.search(r"假.?装|扮.?演", ut) and re.search(
-        r"医生|批评家|黑客|顾问|小混混|记者|厨师", ut
+        r"医生|批评家|黑客|顾问|小混混|记者|厨师",
+        ut,
     ):
         return "role_play_injection"
     if re.search(r"无限制.*AI|没有任何限制", ut):
@@ -61,11 +65,13 @@ def classify(system_text, user_text):
 
     # style override
     if re.search(
-        r"用.*(?:成人|粗俗|冷漠|刻薄|骂|严厉|激情|随便|流行|网络.*语气|粗话|流行语)", ut
+        r"用.*(?:成人|粗俗|冷漠|刻薄|骂|严厉|激情|随便|流行|网络.*语气|粗话|流行语)",
+        ut,
     ):
         return "style_override"
     if re.search(
-        r"(?:stop|drop).*being.*(?:nice|polite|professional|formal|gentle)", ut
+        r"(?:stop|drop).*being.*(?:nice|polite|professional|formal|gentle)",
+        ut,
     ):
         return "style_override"
     if re.search(r"be (?:mean|strict|angry|drill.*sergeant|tough|casual)", ut):
@@ -80,7 +86,8 @@ def classify(system_text, user_text):
 
     # progressive prompt
     if re.search(
-        r"我知道你.*(?:程序|模型)|我们关系|别端着|不用装|脱.*角色|脱离角色", ut
+        r"我知道你.*(?:程序|模型)|我们关系|别端着|不用装|脱.*角色|脱离角色",
+        ut,
     ):
         return "progressive_prompt"
     if re.search(r"你脱离一下角色|我知道你.*只是|跳出.*角色", ut):
@@ -103,7 +110,8 @@ def classify(system_text, user_text):
     ):
         return "direct_override"
     if re.search(
-        r"forget.*your.*role|disregard.*instruction|forget.*previous|不再受.*限制", ut
+        r"forget.*your.*role|disregard.*instruction|forget.*previous|不再受.*限制",
+        ut,
     ):
         return "direct_override"
     if re.search(r"请删除.*限制|请删除.*设定|请抛弃.*设定", ut):
@@ -143,7 +151,7 @@ cat_order = [
 ]
 categories = {c: [] for c in cat_order}
 
-with open("dataset/v0.1a.jsonl5") as f:
+with open("dataset/v0.1.jsonl5") as f:
     for i, line in enumerate(f):
         line = line.strip()
         if not line:
