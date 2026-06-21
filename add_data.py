@@ -31,7 +31,9 @@ if isinstance(new_data_raw, dict):
 elif isinstance(new_data_raw, list):
     new_data_list = new_data_raw
 else:
-    raise TypeError(f"Unsupported .newdata.json5 content type: {type(new_data_raw).__name__}")
+    raise TypeError(
+        f"Unsupported .newdata.json5 content type: {type(new_data_raw).__name__}"
+    )
 
 unique_entries = []
 duplicate_entries = []
